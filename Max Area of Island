@@ -1,0 +1,42 @@
+二维数组可以当做一个图来看待，利用图的算法来解决，比如此处使用DFS:for循环内置递归
+代码如下（ＰＹＨＯＮ）：
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        height = len(grid)
+        width = len(grid[0])
+        visit = [[0 for i in range(width)] for j in range(height)]
+        res = 0
+        for i in range(height):
+            for j in range(width):
+                if grid[i][j] == 1 and visit[i][j] == 0:
+                    visit[i][j] = 1
+                    area = 1
+                    area += self.traval(grid,visit,i,j)
+                    if area > res:
+                        res = area
+        
+        return res
+                    
+    def traval(self, grid, visit, i, j):
+        area = 0
+        if i-1 >= 0 and grid[i-1][j] == 1 and visit[i-1][j] == 0:
+            visit[i-1][j] = 1
+            area += self.traval(grid,visit,i-1,j) + 1
+            
+        if i+1 < len(grid) and grid[i+1][j] == 1 and visit[i+1][j] == 0:
+            visit[i+1][j] = 1
+            area += self.traval(grid,visit,i+1,j) + 1
+            
+        if j-1 >= 0 and grid[i][j-1] == 1 and visit[i][j-1] == 0:
+            visit[i][j-1] = 1
+            area += self.traval(grid,visit,i,j-1) + 1
+            
+        if j+1 < len(grid[0]) and grid[i][j+1] == 1 and visit[i][j+1] == 0:
+            visit[i][j+1] = 1
+            area += self.traval(grid,visit,i,j+1) + 1
+            
+        return area
